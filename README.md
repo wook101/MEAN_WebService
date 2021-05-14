@@ -1,0 +1,1 @@
+mongodb 데이터 저장소 위치 c:\Data\db
