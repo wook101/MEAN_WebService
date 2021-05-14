@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/wook101/MEAN_WebService/issues"
   },
-  "homepage": "https://github.com/wook101/MEAN_WebService#readme"
+  "homepage": "https://github.com/wook101/MEAN_WebService#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
