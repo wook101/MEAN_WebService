@@ -20,6 +20,11 @@ module.exports = function(){
     app.use(bodyParser.json());
     app.use(methodOverride());
 
+
+    app.set('views','./app/views'); //views경로에서 템플릿 찾음
+    app.set('view engine','ejs');   //ejs파일로 설정
+
+
     require('../app/routes/route.js')(app);
 
     return app;
