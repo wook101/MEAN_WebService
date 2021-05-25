@@ -27,5 +27,7 @@ module.exports = function(){
 
     require('../app/routes/route.js')(app);
 
+    app.use(express.static('./public'));    //static 미들웨어 추가
+
     return app;
 };
