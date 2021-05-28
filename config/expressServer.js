@@ -23,8 +23,12 @@ module.exports = function(){
     app.use(methodOverride());
 
 
-    app.set('views','./app/views'); //views경로에서 템플릿 찾음
-    app.set('view engine','ejs');   //ejs파일로 설정
+    //app.set('view engine','ejs');       //ejs템플릿 엔진 설정
+    //app.set('views','./app/views/ejs'); //해당경로에서 템플릿 찾음
+    
+    app.set('view engine','jade');
+    app.set('views','./app/views/jade');
+
 
     app.use(session({
         saveUninitialized:true,
@@ -36,6 +40,14 @@ module.exports = function(){
     require('../app/routes/route.js')(app);
 
     app.use(express.static('./public'));    //static 미들웨어 추가
+
+
+    app.locals.pretty=true;
+    app.get('/template',function(req, res){
+        res.render('temp',{time:Date(),
+                            title:"타이틀입니다."});
+    });
+
 
     return app;
 };
