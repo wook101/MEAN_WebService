@@ -38,6 +38,8 @@ module.exports = function(){
 
 
     require('../app/routes/route.js')(app);
+    require('../app/routes/user.server.routes.js')(app);
+
 
     app.use(express.static('./public'));    //static 미들웨어 추가
 

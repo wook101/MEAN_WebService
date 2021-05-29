@@ -1,4 +1,5 @@
 module.exports = {
     //Development configuration options
-    sessionSecret: 'developmentSessionSecret'  //sessionSecret속성추가
+    sessionSecret: 'developmentSessionSecret',  //sessionSecret속성추가
+    db: 'mongodb://localhost/mean-book'
 };
