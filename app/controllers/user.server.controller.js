@@ -61,3 +61,14 @@ exports.update = function(req,res,next){
         });
 
 };
+
+//document 삭제
+exports.delete = function(req,res,next){
+    req.user.remove(err =>{
+        if (err){
+            return next(err);
+        }else{
+            res.status(200).json(req.user);
+        }
+    })
+}
