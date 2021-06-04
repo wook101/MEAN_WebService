@@ -26,10 +26,12 @@ exports.list = function(req,res,next){
     });
 }
 
+//userByID메소드로 조회된 document가 req.user객체에 담겨 응답
 exports.read = function(req,res){
     res.json(req.user);
 };
 
+//id을 통해 document조회
 exports.userByID = function(req,res,next,id){
     User.findOne({
             _id: id
@@ -43,5 +45,19 @@ exports.userByID = function(req,res,next,id){
             }
         }
     );
+
+};
+
+//document갱신
+exports.update = function(req,res,next){
+    User.findByIdAndUpdate(req.user.id, req.body, 
+        {'new': true},
+        (err,user)=>{
+            if (err){
+                return next(err);
+            }else{
+                res.status(200).json(user);
+            }
+        });
 
 };

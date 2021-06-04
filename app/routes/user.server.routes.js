@@ -6,7 +6,8 @@ module.exports = function(app){
         .get(users.list);        //모든 document list들을 조회하는 모듈 라우트에 등록
 
     app.route('/users/:userId')
-        .get(users.read);
+        .get(users.read)
+        .put(users.update);
     
     app.param('userId', users.userByID); //req.user객체를 채우기 위해 먼저 userById실행
     
