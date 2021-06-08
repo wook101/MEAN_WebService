@@ -4,10 +4,14 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     firstName: String,
     lastName: String,
-    email: String,
+    email: {
+        type: String,
+        index: true   //email secondary 인덱스
+    },
     username: {
         type: String,
-        trim: true
+        trim: true,
+        unique: true //unique 인덱스
     },
     password: String,
     created:{
