@@ -6,14 +6,24 @@ const UserSchema = new Schema({
     lastName: String,
     email: {
         type: String,
-        index: true   //email secondary 인덱스
+        index: true,        //email secondary 인덱스, 보조 색인이 되어 email 과 관련된 질의를 할 경우 성능향상
+        match: /.+\@.+\..+/ //이메일 정규표현식 패턴
     },
     username: {
         type: String,
         trim: true,
-        unique: true //unique 인덱스
+        unique: true,   //unique 인덱스 primary key와 같은 형식
+        required: true  //document를 추가할 때 username필드를 꼭 포함해야 함
     },
-    password: String,
+    password: {
+        type: String,
+        validate:[
+            function(password){
+                return password.length >= 6;
+            },
+            '패스워드가 6자 이상 입력 되지않음.'
+        ]
+    },
     created:{
         type: Date,
         default: Date.now
@@ -30,6 +40,10 @@ const UserSchema = new Schema({
                 return url
             }
         }
+    },
+    role:{
+        type: String,
+        enum: ["Admin","Owner","User"]  //3가지 role이외에 다른 스트링은 허용하지 않음
     }
 },
 {collection:'user'});//collection명 설정 안해주면 defaul값이 users로 지정됨 
