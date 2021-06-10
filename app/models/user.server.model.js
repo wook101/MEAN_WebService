@@ -48,6 +48,22 @@ const UserSchema = new Schema({
 },
 {collection:'user'});//collection명 설정 안해주면 defaul값이 users로 지정됨 
 
+const PostSchema = new Schema({
+    title:{
+        type: String,
+        required: true
+    },
+    content:{
+        type: String,
+        required: true
+    },
+    author:{
+        type: Schema.ObjectId,
+        ref: 'User'
+    }
+});
+
+
 UserSchema.virtual('fullName').get(function(){  //fullName필드를 보여주고 싶을때 virtual메소드 사용
     return this.firstName+' '+this.lastName;
 });
@@ -67,4 +83,6 @@ UserSchema.post('save',function(next){
     console.log(this.username+"가 저장됬습니다.");
 });
 
+
 mongoose.model('User', UserSchema);
+mongoose.model('Post', PostSchema);
