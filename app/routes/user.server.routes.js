@@ -1,4 +1,5 @@
 const users = require('../controllers/user.server.controller');
+const posts = require('../controllers/post.server.controller');
 
 module.exports = function(app){
     app.route('/users')
@@ -9,7 +10,11 @@ module.exports = function(app){
         .get(users.read)
         .put(users.update)
         .delete(users.delete);
-    
+
     app.param('userId', users.userByID); //req.user객체를 채우기 위해 먼저 userById실행
     
+    app.route('/posts')
+        .post(posts.create);
+    
+
 };

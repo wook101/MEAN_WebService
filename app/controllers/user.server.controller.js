@@ -10,7 +10,7 @@ exports.create = function(req, res, next){
         }else{
             res.status(200).json(user);
         }
-    })
+    });
 
 }
 
