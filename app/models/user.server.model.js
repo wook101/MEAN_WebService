@@ -77,6 +77,7 @@ UserSchema.methods.hashPassword = function(password){
     return crypto.pbkdf2Sync(password,this.salt,10000,64).toString('base64');
 };
 
+//password문자열 인자를 받아 해싱한 후 사용자의 해싱된 암호화 비교
 UserSchema.methods.authenticate = function(password){
     return this.password === this.hashPassword(password);
 };
