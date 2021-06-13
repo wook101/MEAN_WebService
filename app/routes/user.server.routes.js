@@ -14,7 +14,8 @@ module.exports = function(app){
     app.param('userId', users.userByID); //req.user객체를 채우기 위해 먼저 userById실행
     
     app.route('/posts')
-        .post(posts.create);
+        .post(posts.create)
+        .get(posts.list);
     
 
 };

@@ -25,6 +25,16 @@ exports.create = function(req, res, next){
             res.status(200).json(post);
         }
     });
+};
 
+exports.list = function(req,res,next){
 
-}
+    Post.find().populate('author').exec((err,posts)=>{  //참조가 필요한 author이름을 넣어 exec메소드의 인자로부터 데이터를 받아옴
+        if(err){
+            return next(err);
+        }else{
+            res.status(200).json(posts)
+        }
+    });
+
+};
