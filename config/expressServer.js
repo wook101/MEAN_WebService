@@ -1,10 +1,11 @@
+const config = require('./config');
 const express = require('express');                 //express 서버
 const morgan = require('morgan');                   //로거 미들웨어 제공
 const compress = require('compression');            //응답body 압축 제공
 const bodyParser = require('body-parser');          //요청 데이터를 처리할 수 있는 미들웨어 제공
 const methodOverride = require('method-override');  
 const session = require('express-session');
-const config = require('./config');
+const passport = require('passport');               //passport모듈
 
 module.exports = function(){
     const app = express();
@@ -36,6 +37,8 @@ module.exports = function(){
         secret:config.sessionSecret
     }));
 
+    app.use(passport.initialize()); //passport모듈을 구동시킴
+    app.use(passport.session());    //Express세션을 이용하여 사용자 세션추적
 
     require('../app/routes/route.js')(app);
     require('../app/routes/user.server.routes.js')(app);

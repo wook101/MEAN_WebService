@@ -24,6 +24,15 @@ const UserSchema = new Schema({
             '패스워드가 6자 이상 입력 되지않음.'  //return값이 false인 경우 다큐먼트를 저장하지 않고 에러 메시지를 콜백에 전달
         ]
     },
+    salt:{              //암호 해시에 사용
+        type: String
+    },
+    provider:{          //사용자 등록에 사용된 전략
+        type: String,
+        required: 'Provider is required'
+    },
+    providerId: String, //인증전략의 사용자 식별자를 나타냄
+    providerData: {},   //나중에 OAuth 공급자로부터 검색한 사용자 객체를 저장하는데 사용
     created:{
         type: Date,
         default: Date.now
@@ -52,17 +61,46 @@ const UserSchema = new Schema({
 UserSchema.virtual('fullName').get(function(){  //fullName필드를 보여주고 싶을때 virtual메소드 사용
     return this.firstName+' '+this.lastName;
 });
-UserSchema.set('toJSON', {getters:true, virtuals:true});
 
 
-//pre미들웨어를 이용한 모델의 유효성 검사
+
+//사용자의 암호 해싱을 처리하기 위한 pre미들웨어
 UserSchema.pre('save',function(next){
-    if (this.username.length>=10){ //유효성 검사 로직 ex)username의 길이가 10이상인 값만 저장 허용
-        next()
-    }else{
-        next(new Error('에러발생'));
+    if (this.password){ 
+        this.salt = new Buffer(crypto.randomBytes(16).toString('base64'),'base64'); //random암호 해싱을 생성해 salt에 저장
+        this.password = this.hashPassword(this.password);   //hashPassword메소드를 이용하여 현재 비밀번호를 해싱된 비밀번호로 변경한다.
     }
+    next();
 });
+//hashPassword메소드 정의, crypto모듈을 사용
+UserSchema.methods.hashPassword = function(password){
+    return crypto.pbkdf2Sync(password,this.salt,10000,64).toString('base64');
+};
+
+UserSchema.methods.authenticate = function(password){
+    return this.password === this.hashPassword(password);
+};
+
+UserSchema.statics.findUniqueUsername = function(username,suffix,callback){
+    var possibleUsername = username+(suffix || '');
+    this.findOne({
+        username: possibleUsername
+    }, (err, user) =>{
+        if (!err){
+            if (!user){
+                callback(possibleUsername);
+            } else{
+                return this.findUniqueUsername(username, (suffix || 0)+1, callback);
+            }
+        } else{
+            callback(null);
+        }
+    }
+    
+    );
+};
+
+
 //post미들웨어를 이용한 로깅
 UserSchema.post('save',function(next){
     console.log(this.username+"가 저장됬습니다.");
@@ -85,6 +123,8 @@ const PostSchema = new Schema({
 },
 {collection:'post'});
 
+
+UserSchema.set('toJSON', {getters:true, virtuals:true});
 
 mongoose.model('User', UserSchema);
 mongoose.model('Post', PostSchema);
