@@ -1,7 +1,12 @@
+const index = require('../controllers/index.server.controller');
 const users = require('../controllers/user.server.controller');
 const posts = require('../controllers/post.server.controller');
+const passport = require('passport');
 
 module.exports = function(app){
+    app.route('/')
+        .get(index.render);
+
     app.route('/users')
         .post(users.create)
         .get(users.list);        //모든 document list들을 조회하는 모듈 라우트에 등록
@@ -17,5 +22,17 @@ module.exports = function(app){
         .post(posts.create)
         .get(posts.list);
     
+    app.route('/signup')
+        .get(users.renderSignup)
+        .post(users.signup);
 
+    app.route('/signin')
+        .get(users.renderSignin)
+        .post(passport.authenticate('local',{
+            successRedirect:'/',
+            failureRedirect:'/signin',
+            failureFlash: true
+        }));
+    
+    app.get('/signout', users.signout);
 };

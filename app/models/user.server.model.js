@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const crypto = require('crypto'); //랜덤 스트링을 얻기위한 모듈 ex)f39bf14f62922b8c054e5781aaa806e4f5ad4a39
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -66,15 +67,19 @@ UserSchema.virtual('fullName').get(function(){  //fullName필드를 보여주고
 
 //사용자의 암호 해싱을 처리하기 위한 pre미들웨어
 UserSchema.pre('save',function(next){
-    if (this.password){ 
-        this.salt = new Buffer(crypto.randomBytes(16).toString('base64'),'base64'); //random암호 해싱을 생성해 salt에 저장
+    console.log("1",this.password);
+    console.log(this.password);
+    if (this.password){
+        console.log("실행됨"); 
+        this.salt = crypto.randomBytes(16).toString('base64'); //random암호 해싱을 생성해 salt에 저장
         this.password = this.hashPassword(this.password);   //hashPassword메소드를 이용하여 현재 비밀번호를 해싱된 비밀번호로 변경한다.
     }
+    
     next();
 });
-//hashPassword메소드 정의, crypto모듈을 사용
+//hashPassword메소드 정의, pasword + salt를 통해 해싱 비밀번호 생성, crypto모듈을 사용
 UserSchema.methods.hashPassword = function(password){
-    return crypto.pbkdf2Sync(password,this.salt,10000,64).toString('base64');
+    return crypto.pbkdf2Sync(password,this.salt,10000,64,'sha512').toString('base64');
 };
 
 //password문자열 인자를 받아 해싱한 후 사용자의 해싱된 암호화 비교
