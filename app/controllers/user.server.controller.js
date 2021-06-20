@@ -81,7 +81,7 @@ function getErrorMessage(err){
         switch(err.code){
             case 11000:
             case 11001:
-                message = 'Username이 이미 존재합니다.'
+                message = '해당 아이디가 이미 존재합니다.'
                 break;
             default:
                 message = 'Something went wrong';
@@ -92,7 +92,6 @@ function getErrorMessage(err){
                 message = err.errors[errName].message;
         }
     }
-
     return message;
 };
 

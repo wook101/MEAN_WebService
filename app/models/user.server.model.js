@@ -60,21 +60,17 @@ const UserSchema = new Schema({
 
 
 UserSchema.virtual('fullName').get(function(){  //fullName필드를 보여주고 싶을때 virtual메소드 사용
-    return this.firstName+' '+this.lastName;
+    return this.lastName+' '+this.firstName+'님 반갑습니다.';
 });
 
 
 
 //사용자의 암호 해싱을 처리하기 위한 pre미들웨어
 UserSchema.pre('save',function(next){
-    console.log("1",this.password);
-    console.log(this.password);
     if (this.password){
-        console.log("실행됨"); 
         this.salt = crypto.randomBytes(16).toString('base64'); //random암호 해싱을 생성해 salt에 저장
         this.password = this.hashPassword(this.password);   //hashPassword메소드를 이용하여 현재 비밀번호를 해싱된 비밀번호로 변경한다.
     }
-    
     next();
 });
 //hashPassword메소드 정의, pasword + salt를 통해 해싱 비밀번호 생성, crypto모듈을 사용

@@ -38,7 +38,7 @@ module.exports = function(){
         secret:config.sessionSecret
     }));
     
-    app.use(flash());
+    app.use(flash());               //로그인,회원가입에서 오류메시지를 저장하기 위해 사용
     app.use(passport.initialize()); //passport모듈을 구동시킴
     app.use(passport.session());    //Express세션을 이용하여 사용자 세션추적
 
