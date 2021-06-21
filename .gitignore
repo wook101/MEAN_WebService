@@ -1,5 +1,6 @@
 # Dependency directories
 node_modules/
 
-# 페이스북 clientID,secretID가 담겨있는 정보
-facebookinfo.json
+# 페이스북,구글 clientID,secretID가 담겨있는 정보
+config/facebookInfo.json
+config/googleInfo.json

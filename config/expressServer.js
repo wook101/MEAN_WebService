@@ -45,8 +45,7 @@ module.exports = function(){
     //require('../app/routes/route.js')(app);
     require('../app/routes/user.server.routes.js')(app);    //라우팅
 
-
-    app.use(express.static('./public'));    //static 미들웨어 추가
+    app.use(express.static('public'));    //static 미들웨어 추가
 
 
     app.locals.pretty=true;
