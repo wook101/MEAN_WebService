@@ -150,3 +150,28 @@ exports.signout = function(req,res){
     req.logout();   //Passport 모듈에서 제공, 인증된 세션을 무효화
     res.redirect('/');
 };
+
+//oAuth 사용자 생성
+exports.saveOAuthUserProfile = function(req, profile, done){
+    User.findOne({
+        provider: profile.provider,
+        providerId: profile.providerId
+    },(err,user)=>{
+        if (err){
+            return done(err);
+        }else{
+            if(!user){//회원정보가 없다면 새로 생성하여 로그인
+                const possibleUsername = profile.username || ((profile.email) ? profile.email.split('@')[0] : '');
+                User.findUniqueUsername(possibleUsername,null,(availableUsername)=>{
+                    const newUser = new User(profile);
+                    newUser.username = availableUsername;
+                    newUser.save((err)=>{
+                        return done(err, newUser);
+                    });
+                });
+            } else{ //mongodb에 저장 되어있는 기존 사용자를 찾았다면 로그인
+                return done(err,user);
+            }
+        }
+    });
+};

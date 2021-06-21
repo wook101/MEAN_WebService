@@ -35,4 +35,11 @@ module.exports = function(app){
         }));
     
     app.get('/signout', users.signout);
+
+    app.get('/oauth/facebook', passport.authenticate('facebook',{ scope: 'email'})); //페이스북으 ㄴ기본적으로 email을 제공하지않음 그래서 scope에 이메일 추가,사용자 인증절차 시작
+    app.get('/oauth/facebook/callback', passport.authenticate('facebook',{            //Facebook profile을 링크하면 인증절차 종료
+        failureRedirect: '/signin',
+        successRedirect: '/'
+    }));
+
 };

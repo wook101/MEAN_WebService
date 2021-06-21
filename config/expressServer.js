@@ -43,7 +43,7 @@ module.exports = function(){
     app.use(passport.session());    //Express세션을 이용하여 사용자 세션추적
 
     //require('../app/routes/route.js')(app);
-    require('../app/routes/user.server.routes.js')(app);
+    require('../app/routes/user.server.routes.js')(app);    //라우팅
 
 
     app.use(express.static('./public'));    //static 미들웨어 추가

@@ -15,4 +15,5 @@ module.exports = function(){
         });
     });
     require('./strategies/local.js')();
+    require('./strategies/facebook.js')();  //Facebook strategy환경 설정 로드
 };
