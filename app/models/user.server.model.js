@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const crypto = require('crypto'); //랜덤 스트링을 얻기위한 모듈 ex)f39bf14f62922b8c054e5781aaa806e4f5ad4a39
 const Schema = mongoose.Schema;
 
+mongoose.set('useCreateIndex', true);
 const UserSchema = new Schema({
     firstName: String,
     lastName: String,
