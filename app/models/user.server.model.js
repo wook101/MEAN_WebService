@@ -60,7 +60,7 @@ const UserSchema = new Schema({
 
 
 UserSchema.virtual('fullName').get(function(){  //fullName필드를 보여주고 싶을때 virtual메소드 사용
-    return this.lastName+' '+this.firstName+'님 반갑습니다.';
+    return this.username+'님 반갑습니다.';
 });
 
 
@@ -84,7 +84,7 @@ UserSchema.methods.authenticate = function(password){
 };
 
 UserSchema.statics.findUniqueUsername = function(username,suffix,callback){
-    var possibleUsername = username+(suffix || '');
+    var possibleUsername = username+suffix;
     this.findOne({
         username: possibleUsername
     }, (err, user) =>{
@@ -92,7 +92,7 @@ UserSchema.statics.findUniqueUsername = function(username,suffix,callback){
             if (!user){
                 callback(possibleUsername);
             } else{
-                return this.findUniqueUsername(username, (suffix || 0)+1, callback);
+                return this.findUniqueUsername(username, '*', callback);
             }
         } else{
             callback(null);
@@ -105,7 +105,7 @@ UserSchema.statics.findUniqueUsername = function(username,suffix,callback){
 
 //post미들웨어를 이용한 로깅
 UserSchema.post('save',function(next){
-    console.log(this.username+"가 저장됬습니다.");
+    console.log(this.username+" 사용자가 저장됬습니다.");
 });
 
 

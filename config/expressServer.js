@@ -42,17 +42,10 @@ module.exports = function(){
     app.use(passport.initialize()); //passport모듈을 구동시킴
     app.use(passport.session());    //Express세션을 이용하여 사용자 세션추적
 
-    //require('../app/routes/route.js')(app);
+
     require('../app/routes/user.server.routes.js')(app);    //라우팅
 
     app.use(express.static('public'));    //static 미들웨어 추가
-
-
-    app.locals.pretty=true;
-    app.get('/template',function(req, res){
-        res.render('temp',{time:Date(),
-                            title:"타이틀입니다."});
-    });
 
 
     return app;

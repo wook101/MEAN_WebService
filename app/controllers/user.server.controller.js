@@ -162,7 +162,7 @@ exports.saveOAuthUserProfile = function(req, profile, done){
         }else{
             if(!user){//회원정보가 없다면 새로 생성하여 로그인
                 const possibleUsername = profile.username || ((profile.email) ? profile.email.split('@')[0] : '');
-                User.findUniqueUsername(possibleUsername,null,(availableUsername)=>{
+                User.findUniqueUsername(possibleUsername,'',(availableUsername)=>{
                     const newUser = new User(profile);
                     newUser.username = availableUsername;
                     newUser.save((err)=>{
